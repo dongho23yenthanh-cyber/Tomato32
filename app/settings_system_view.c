@@ -178,12 +178,8 @@ static void toggle_date_source_cb(lv_event_t *e) {
 }
 
 static void toggle_theme_cb(lv_event_t *e) {
-  int mode = (int)(intptr_t)lv_event_get_user_data(e);
-  if (mode == 0) {
-    theme_set_dark(false);
-  } else {
-    theme_set_dark(true);
-  }
+  (void)e;
+  theme_toggle();
   theme_save();
   theme_refresh();
   settings_screen_refresh_theme();
@@ -446,6 +442,9 @@ void settings_system_view_build(lv_obj_t *parent) {
   lv_obj_set_style_bg_opa(system_theme_seg_container, LV_OPA_COVER, 0);
   lv_obj_set_style_pad_all(system_theme_seg_container, 2, 0);
   lv_obj_set_scrollable(system_theme_seg_container, false);
+  lv_obj_add_flag(system_theme_seg_container, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_add_event_cb(system_theme_seg_container, toggle_theme_cb,
+                      LV_EVENT_CLICKED, NULL);
   lv_obj_align(system_theme_seg_container, LV_ALIGN_RIGHT_MID, -24, 0);
 
   system_theme_light = lv_btn_create(system_theme_seg_container);
@@ -453,7 +452,7 @@ void settings_system_view_build(lv_obj_t *parent) {
   lv_obj_set_size(system_theme_light, 62, 36);
   lv_obj_set_style_radius(system_theme_light, 18, 0);
   lv_obj_add_event_cb(system_theme_light, toggle_theme_cb, LV_EVENT_CLICKED,
-                      (void *)0);
+                      NULL);
   lv_obj_set_pos(system_theme_light, 0, 0);
 
   lv_obj_t *lbl_seg_light = lv_label_create(system_theme_light);
@@ -466,7 +465,7 @@ void settings_system_view_build(lv_obj_t *parent) {
   lv_obj_set_size(system_theme_dark, 78, 36);
   lv_obj_set_style_radius(system_theme_dark, 18, 0);
   lv_obj_add_event_cb(system_theme_dark, toggle_theme_cb, LV_EVENT_CLICKED,
-                      (void *)1);
+                      NULL);
   lv_obj_set_pos(system_theme_dark, 64, 0);
 
   lv_obj_t *lbl_seg_dark = lv_label_create(system_theme_dark);
