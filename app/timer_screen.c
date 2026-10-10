@@ -580,8 +580,9 @@ void timer_screen_update(void) {
     lv_obj_set_style_bg_opa(btn_reset, LV_OPA_COVER, 0);
   } else {
     lv_obj_set_clickable(btn_reset, false);
-    lv_obj_set_style_bg_color(btn_reset, lv_color_white(), 0);
-    lv_obj_set_style_bg_opa(btn_reset, LV_OPA_50, 0);
+    lv_obj_set_style_bg_color(btn_reset, theme_get_inverse_bg(), 0);
+    lv_obj_set_style_bg_opa(btn_reset, theme_is_dark() ? LV_OPA_50 : LV_OPA_20,
+                            0);
   }
 
   lv_obj_set_style_bg_color(btn_start_pause, preset_color, 0);
@@ -604,7 +605,7 @@ void timer_screen_update(void) {
       lv_obj_set_style_bg_color(dots[i], preset_color, 0);
     } else if (i == current_round && phase == PHASE_WORK) {
       lv_obj_add_style(dots[i], &theme.dot_filled, 0);
-      lv_obj_set_style_bg_color(dots[i], theme_get_inverse_bg(), 0);
+      lv_obj_set_style_bg_color(dots[i], preset_color, 0);
     } else {
       lv_obj_add_style(dots[i], &theme.dot_empty, 0);
     }
@@ -616,4 +617,5 @@ void timer_screen_update(void) {
 void timer_screen_refresh_theme(void) {
   lv_style_set_text_color(&style_circle_btn, lv_color_white());
   theme_apply_custom_bg(scr);
+  timer_screen_update();
 }
