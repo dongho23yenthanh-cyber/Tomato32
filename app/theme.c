@@ -80,7 +80,7 @@ void theme_init(lv_display_t *disp) {
   lv_style_init(&theme.dot_empty);
   lv_style_set_bg_color(&theme.dot_empty, theme_get_dot_empty());
   lv_style_set_bg_opa(&theme.dot_empty,
-                      theme_is_dark() ? LV_OPA_50 : LV_OPA_20);
+                      theme_is_dark() ? LV_OPA_20 : LV_OPA_20);
   lv_style_set_radius(&theme.dot_empty, LV_RADIUS_CIRCLE);
   lv_style_set_border_width(&theme.dot_empty, 0);
   lv_style_set_size(&theme.dot_empty, 16, 16);
@@ -112,7 +112,7 @@ void theme_refresh(void) {
 
   lv_style_set_bg_color(&theme.dot_empty, theme_get_dot_empty());
   lv_style_set_bg_opa(&theme.dot_empty,
-                      theme_is_dark() ? LV_OPA_50 : LV_OPA_20);
+                      theme_is_dark() ? LV_OPA_20 : LV_OPA_20);
   lv_style_set_bg_color(&theme.dot_filled, theme_get_inverse_bg());
 }
 

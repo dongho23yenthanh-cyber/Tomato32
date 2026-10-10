@@ -581,7 +581,7 @@ void timer_screen_update(void) {
   } else {
     lv_obj_set_clickable(btn_reset, false);
     lv_obj_set_style_bg_color(btn_reset, theme_get_inverse_bg(), 0);
-    lv_obj_set_style_bg_opa(btn_reset, theme_is_dark() ? LV_OPA_50 : LV_OPA_20,
+    lv_obj_set_style_bg_opa(btn_reset, theme_is_dark() ? LV_OPA_20 : LV_OPA_20,
                             0);
   }
 
