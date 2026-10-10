@@ -584,6 +584,11 @@ void timer_screen_update(void) {
     lv_obj_set_style_bg_opa(btn_reset, theme_is_dark() ? LV_OPA_20 : LV_OPA_20,
                             0);
   }
+  lv_obj_t *lbl_reset = lv_obj_get_child(btn_reset, 0);
+  lv_obj_set_style_text_color(lbl_reset, lv_color_white(), 0);
+  lv_obj_set_style_text_opa(
+      lbl_reset,
+      can_prev ? LV_OPA_COVER : (theme_is_dark() ? LV_OPA_50 : LV_OPA_80), 0);
 
   lv_obj_set_style_bg_color(btn_start_pause, preset_color, 0);
   lv_obj_set_style_bg_color(btn_skip, preset_color, 0);
