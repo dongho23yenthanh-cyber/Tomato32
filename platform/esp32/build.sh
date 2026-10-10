@@ -149,11 +149,11 @@ if $DO_FLASH; then
 	else
 		echo "=> Flashing from host..."
 	fi
-	ESPTOOL=""
-	if command -v esptool.py &>/dev/null; then
-		ESPTOOL="esptool.py"
+	ESPTOOL=()
+	if command -v esptool &>/dev/null; then
+		ESPTOOL=(esptool)
 	elif python3 -m esptool version &>/dev/null 2>&1; then
-		ESPTOOL="python3 -m esptool"
+		ESPTOOL=(python3 -m esptool)
 	else
 		echo "ERROR: esptool not found. Install it with:"
 		echo "  pip install esptool"
@@ -169,11 +169,20 @@ if $DO_FLASH; then
 		echo "Run a build first, then retry."
 		exit 1
 	fi
+	# ESP-IDF emits legacy underscore-style option names. Normalize them for
+	# current esptool releases, which deprecate those spellings.
+	NORMALIZED_FLASH_ARGS_FILE="$(mktemp "${FLASH_ARGS_FILE}.esptool.XXXXXX")"
+	trap 'rm -f "${NORMALIZED_FLASH_ARGS_FILE}"' EXIT
+	sed \
+		-e 's/--flash_mode/--flash-mode/g' \
+		-e 's/--flash_freq/--flash-freq/g' \
+		-e 's/--flash_size/--flash-size/g' \
+		"${FLASH_ARGS_FILE}" >"${NORMALIZED_FLASH_ARGS_FILE}"
 	# watchdog-reset re-latches the strapping pins, so the chip leaves
 	# BOOT-button download mode; an RTS reset over USB-Serial/JTAG does not.
-	${ESPTOOL} --chip esp32s3 -p "${DEVICE}" -b 460800 \
+	"${ESPTOOL[@]}" --chip esp32s3 -p "${DEVICE}" -b 460800 \
 		--before default-reset --after watchdog-reset \
-		write-flash @"${FLASH_ARGS_FILE}"
+		write-flash @"${NORMALIZED_FLASH_ARGS_FILE}"
 	echo "=> Flash done."
 fi
 
