@@ -442,7 +442,7 @@ void settings_system_view_build(lv_obj_t *parent) {
   lv_obj_set_style_bg_opa(system_theme_seg_container, LV_OPA_COVER, 0);
   lv_obj_set_style_pad_all(system_theme_seg_container, 2, 0);
   lv_obj_set_scrollable(system_theme_seg_container, false);
-  lv_obj_add_flag(system_theme_seg_container, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_set_clickable(system_theme_seg_container, true);
   lv_obj_add_event_cb(system_theme_seg_container, toggle_theme_cb,
                       LV_EVENT_CLICKED, NULL);
   lv_obj_align(system_theme_seg_container, LV_ALIGN_RIGHT_MID, -24, 0);
