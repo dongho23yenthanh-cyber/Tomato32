@@ -8,6 +8,9 @@
 /* Build the settings view and all of its subviews as children of `parent`. */
 void settings_system_view_build(lv_obj_t *parent);
 
+/* Refresh shared system info label colors after a theme change. */
+void settings_system_view_refresh_theme(void);
+
 /* Show the system view at its root subview, hiding the main and edit views. */
 void settings_system_view_show(void);
 

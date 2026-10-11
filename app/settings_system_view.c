@@ -18,6 +18,8 @@
 extern void timer_screen_refresh_theme(void);
 
 static system_subview_t system_subview = SYSTEM_SUBVIEW_ROOT;
+static lv_style_t system_info_text_style;
+static bool system_info_text_style_initialized;
 
 static void system_back_cb(lv_event_t *e);
 static void system_display_menu_cb(lv_event_t *e);
@@ -44,6 +46,12 @@ static void toggle_low_battery_indicator_cb(lv_event_t *e);
 static void toggle_full_battery_indicator_cb(lv_event_t *e);
 static void toggle_battery_icon_cb(lv_event_t *e);
 static void toggle_date_source_cb(lv_event_t *e);
+
+void settings_system_view_refresh_theme(void) {
+  if (system_info_text_style_initialized) {
+    lv_style_set_text_color(&system_info_text_style, theme_get_text_muted());
+  }
+}
 
 static void system_back_cb(lv_event_t *e) {
   (void)e;
@@ -258,6 +266,12 @@ static void toggle_battery_icon_cb(lv_event_t *e) {
 }
 
 void settings_system_view_build(lv_obj_t *parent) {
+  if (!system_info_text_style_initialized) {
+    lv_style_init(&system_info_text_style);
+    system_info_text_style_initialized = true;
+  }
+  settings_system_view_refresh_theme();
+
   view_system = lv_obj_create(parent);
   lv_obj_remove_style_all(view_system);
   lv_obj_set_size(view_system, SETTINGS_DISPLAY_W, SETTINGS_DISPLAY_H);
@@ -285,22 +299,22 @@ void settings_system_view_build(lv_obj_t *parent) {
   /* Version */
   lbl_system_version = lv_label_create(left);
   lv_obj_set_style_text_font(lbl_system_version, &inter_16, 0);
-  lv_obj_set_style_text_color(lbl_system_version, theme_get_text_muted(), 0);
+  lv_obj_add_style(lbl_system_version, &system_info_text_style, 0);
   lv_label_set_text_fmt(lbl_system_version, "Version %s", TOMATO32_VERSION);
   lv_obj_align(lbl_system_version, LV_ALIGN_TOP_MID, 0, 42);
 
   /* Battery percentage */
   lbl_system_hours = lv_label_create(left);
   lv_obj_set_style_text_font(lbl_system_hours, &inter_16, 0);
-  lv_obj_set_style_text_color(lbl_system_hours, theme_get_text_muted(), 0);
+  lv_obj_add_style(lbl_system_hours, &system_info_text_style, 0);
   lv_label_set_text(lbl_system_hours, "Battery -- %");
   lv_obj_align(lbl_system_hours, LV_ALIGN_TOP_MID, 0, 61);
 
-  lv_obj_t *lbl_github = lv_label_create(left);
-  lv_obj_set_style_text_font(lbl_github, &inter_16, 0);
-  lv_obj_set_style_text_color(lbl_github, theme_get_text_muted(), 0);
-  lv_label_set_text(lbl_github, "github.com/einoko/Tomato32");
-  lv_obj_align(lbl_github, LV_ALIGN_TOP_MID, 0, 80);
+  lv_obj_t *lbl_repository_link = lv_label_create(left);
+  lv_obj_set_style_text_font(lbl_repository_link, &inter_16, 0);
+  lv_obj_add_style(lbl_repository_link, &system_info_text_style, 0);
+  lv_label_set_text(lbl_repository_link, "github.com/einoko/Tomato32");
+  lv_obj_align(lbl_repository_link, LV_ALIGN_TOP_MID, 0, 80);
 
   /* Back button */
   btn_system_back = lv_btn_create(left);

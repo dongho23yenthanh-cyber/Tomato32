@@ -450,9 +450,8 @@ void settings_screen_refresh_theme(void) {
   lv_obj_set_style_text_color(lbl_use, theme_get_inverse_text(), 0);
 
   lv_obj_set_style_bg_color(view_system, theme_get_bg(), 0);
+  settings_system_view_refresh_theme();
   lv_obj_set_style_text_color(lbl_system_title, theme_get_text(), 0);
-  lv_obj_set_style_text_color(lbl_system_version, theme_get_text_muted(), 0);
-  lv_obj_set_style_text_color(lbl_system_hours, theme_get_text_muted(), 0);
   lv_obj_set_style_text_color(lbl_system_ui, theme_get_text(), 0);
   lv_obj_set_style_text_color(lbl_system_ui_chevron, theme_get_text_muted(), 0);
   lv_obj_set_style_text_color(lbl_system_sound_menu, theme_get_text(), 0);
