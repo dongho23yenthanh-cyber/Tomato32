@@ -875,7 +875,8 @@ void display_show_startup_screen(const char *title, const char *subtitle) {
   lv_label_set_text(s_startup_title_lbl, title ? title : "Tomato32");
   lv_label_set_text(s_startup_subtitle_lbl,
                     subtitle ? subtitle : "Starting...");
-  lv_label_set_text_fmt(s_startup_version_lbl, "v%s", TOMATO32_VERSION);
+  lv_label_set_text_fmt(s_startup_version_lbl, "%s%s", TOMATO32_VERSION_PREFIX,
+                        TOMATO32_VERSION);
   lv_scr_load(s_startup_scr);
 }
 

@@ -69,11 +69,28 @@ fi
 
 [ -n "${DEVICE}" ] && echo "Using device: ${DEVICE}"
 
+# Prefer an explicit release version; local builds identify the checked-out commit.
+if [ -z "${TOMATO32_VERSION:-}" ]; then
+	if commit_hash="$(git -C "${PROJECT_ROOT}" rev-parse --short=7 HEAD 2>/dev/null)"; then
+		TOMATO32_VERSION="${commit_hash}"
+		if git_status="$(git -C "${PROJECT_ROOT}" status --porcelain 2>/dev/null)"; then
+			if [ -n "${git_status}" ]; then
+				TOMATO32_VERSION="${TOMATO32_VERSION}-dirty"
+			fi
+		else
+			TOMATO32_VERSION="0.0.0-dev"
+		fi
+	else
+		TOMATO32_VERSION="0.0.0-dev"
+	fi
+fi
+
 echo "================================================"
 echo "ESP32-S3 Docker Build"
 echo "Project root: ${PROJECT_ROOT}"
 echo "ESP32 dir:    ${ESP32_DIR}"
 echo "Docker image: ${IMAGE}"
+echo "Version:      ${TOMATO32_VERSION}"
 echo "================================================"
 
 # Ensure docker is available
@@ -114,7 +131,7 @@ docker run --rm -i ${TTY_FLAG} \
 	-v "${PROJECT_ROOT}:${PROJECT_ROOT}" \
 	-w "${ESP32_DIR}" \
 	-e "TERM=${TERM:-xterm-256color}" \
-	-e "TOMATO32_VERSION=${TOMATO32_VERSION:-}" \
+	-e "TOMATO32_VERSION=${TOMATO32_VERSION}" \
 	-e "TOMATO32_DISPLAY_PERF=${TOMATO32_DISPLAY_PERF:-}" \
 	"${IMAGE}" \
 	bash -c "
